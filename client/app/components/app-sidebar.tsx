@@ -1,7 +1,7 @@
-import * as React from "react"
+import * as React from "react";
 
-import { SearchForm } from "~/components/search-form"
-import { VersionSwitcher } from "~/components/version-switcher"
+import { SearchForm } from "~/components/search-form";
+import { VersionSwitcher } from "~/components/version-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -13,9 +13,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "~/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
-import { Link } from "react-router"
+} from "~/components/ui/sidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Link } from "react-router";
+
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 // This is sample data.
 const data = {
@@ -26,12 +33,12 @@ const data = {
         {
           title: "Dashboard",
           to: "/admin/dashboard",
-          isActive: false
+          isActive: false,
         },
         {
           title: "Projects",
           to: "admin/projects",
-          isActive: true
+          isActive: true,
         },
         {
           title: "Users",
@@ -39,25 +46,39 @@ const data = {
         },
       ],
     },
-    
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-      <div className="flex items-center gap-1">
-          <Avatar className="w-9 h-9 ">
-            <AvatarImage src="/kantigo_logo.png" />
-            <AvatarFallback className="bg-white text-blue-600 text-xl font-bold">
-              KantiGo Logo
-            </AvatarFallback>
-          </Avatar>
+        <div className="flex items-center gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <span className="cursor-pointer">
+                <Avatar className="w-9 h-9 ">
+                  <AvatarImage src="/kantigo_logo.png" />
+                  <AvatarFallback className="bg-white text-blue-600 text-sm font-bold">
+                    User Image
+                  </AvatarFallback>
+                </Avatar>
+              </span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem className="cursor-pointer">
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer text-red-600">
+                Log Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-          <h1 className="text-lg font-bold tracking-tight">KantiGo Projects</h1>
-      </div>
-
+          <h1 className="text-lg font-semibold tracking-tight">
+            KantiGo Projects
+          </h1>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
@@ -82,5 +103,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

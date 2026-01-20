@@ -1,19 +1,12 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+import { AppSidebar } from "@/components/app-sidebar";
+
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { Outlet } from "react-router"
+} from "@/components/ui/sidebar";
+import { Outlet } from "react-router";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export default function AdminLayout() {
   return (
@@ -22,28 +15,19 @@ export default function AdminLayout() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
-          <Separator
-            orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
-          />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+          <div className="w-full flex justify-end">
+            <Avatar className="w-9 h-9 ">
+              <AvatarImage src="/kantigo_logo.png" />
+              <AvatarFallback className="bg-white text-blue-600 text-xl font-bold">
+                KantiGo Logo
+              </AvatarFallback>
+            </Avatar>
+          </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-         <Outlet />
+        <div className="flex flex-1 flex-col gap-4 p-8">
+          <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
