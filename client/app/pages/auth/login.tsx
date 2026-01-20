@@ -18,7 +18,7 @@ export default function LoginPage() {
           {/* Logo & Header */}
           <div className="text-center">
             <div className="inline-block">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+              <div className="w-16 h-16 bg-linear-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                 <span className="text-white text-2xl font-bold">KP</span>
               </div>
             </div>
@@ -83,7 +83,7 @@ export default function LoginPage() {
             {/* Submit Button */}
             <button
               onClick={handleSubmit}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02]"
             >
               Sign In
               <ArrowRight className="w-5 h-5" />
