@@ -28,6 +28,20 @@ def upgrade() -> None:
         sa.Column("username", sa.String(length=50), unique=True, index=True, nullable=False),
         sa.Column("email", sa.String(length=120), unique=True, index=True, nullable=False),
         sa.Column("hashed_password", sa.String(length=128), nullable=False),
+        
+        # TimestampMixin
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.func.now(),
+            nullable=False,
+        ),
     )
     # ### end Alembic commands ###
 

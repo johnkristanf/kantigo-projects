@@ -5,6 +5,7 @@ from src.config import settings
 
 Base: DeclarativeBase = declarative_base()
 
+
 class Database:
     engine = None
     async_session = None
@@ -15,7 +16,6 @@ class Database:
             settings.DATABASE_URL,
             echo=True,
             pool_size=3,
-            
             pool_pre_ping=True,
             pool_recycle=3600,  # Recycle connections after 1 hour
             pool_timeout=30,  # Timeout after 30 seconds waiting for connection

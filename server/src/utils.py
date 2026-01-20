@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+
 def group(prefix, *routers):
     group_router = APIRouter(prefix=prefix)
     for router, router_prefix, tags in routers:
