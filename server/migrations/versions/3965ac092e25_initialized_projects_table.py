@@ -23,24 +23,15 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), primary_key=True),
         sa.Column("name", sa.String(length=50), nullable=False),
         sa.Column("description", sa.Text(), nullable=False),
-
-        # Status enum
         sa.Column(
             "status",
-            sa.Enum(
-                "PENDING",
-                "IN_PROGRESS",
-                "COMPLETED",
-                name="status_enum",
-            ),
+            sa.String(length=50),
             nullable=False,
-            server_default="PENDING",
+            server_default="pending",
         ),
-
         # TimelineDateMixin
         sa.Column("start_date", sa.DateTime(timezone=True), nullable=False),
         sa.Column("end_date", sa.DateTime(timezone=True), nullable=False),
-
         # TimestampMixin
         sa.Column(
             "created_at",

@@ -18,9 +18,11 @@ import { useForm } from "react-hook-form";
 import {
   defaultProjectFormValues,
   type Project,
-  type ProjectFormValues,
 } from "~/types/projects";
 import { ProjectCard } from "~/components/project-card";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ProjectsAPI } from "~/api/projects";
+import { toast } from "sonner";
 
 const initialProjects: Project[] = [
   {
@@ -28,40 +30,51 @@ const initialProjects: Project[] = [
     name: "Internal Tools Revamp",
     description: "Redesign internal admin interfaces for efficiency.",
     status: "IN_PROGRESS",
-    startDate: "2024-01-02",
-    endDate: "2024-06-15",
+    start_date: "2024-01-02",
+    end_date: "2024-06-15",
   },
   {
     id: 2,
     name: "Customer Portal Launch",
     description: "Deploy new portal for customer self-service.",
     status: "PENDING",
-    startDate: "2024-06-16",
-    endDate: "2024-11-01",
+    start_date: "2024-06-16",
+    end_date: "2024-11-01",
   },
   {
     id: 3,
     name: "Data Migration",
     description: "Move legacy data to new cloud infrastructure.",
     status: "COMPLETED",
-    startDate: "2023-10-10",
-    endDate: "2024-02-28",
+    start_date: "2023-10-10",
+    end_date: "2024-02-28",
   },
 ];
 
 export default function AdminProjectsPage() {
+  const queryClient = useQueryClient();
+
   const [projects, setProjects] = useState(initialProjects);
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset, formState } =
-    useForm<ProjectFormValues>({
+    useForm<Partial<Project>>({
       defaultValues: defaultProjectFormValues,
     });
 
-  function onSubmit(data: ProjectFormValues) {
-    console.log("data submit: ", data);
+    const createProjectMutation = useMutation({
+      mutationFn: ProjectsAPI.create,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['projects'] });
+        toast.success("Project created successfully!")
+        reset();
+        setOpen(false);
+      },
+    })
 
-    reset();
-    setOpen(false);
+
+  const onSubmit = (data: Partial<Project>) => {
+    console.log("data submit: ", data);
+    createProjectMutation.mutate(data);
   }
 
   return (
@@ -131,34 +144,34 @@ export default function AdminProjectsPage() {
               </div>
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <Label htmlFor="startDate" className="mb-2">
+                  <Label htmlFor="start_date" className="mb-2">
                     Start Date
                   </Label>
                   <Input
-                    id="startDate"
+                    id="start_date"
                     type="date"
-                    {...register("startDate", {
+                    {...register("start_date", {
                       required: "Start date required",
                     })}
                   />
-                  {formState.errors.startDate && (
+                  {formState.errors.start_date && (
                     <p className="text-xs text-red-600 mt-1">
-                      {formState.errors.startDate.message}
+                      {formState.errors.start_date.message}
                     </p>
                   )}
                 </div>
                 <div className="flex-1">
-                  <Label htmlFor="endDate" className="mb-2">
+                  <Label htmlFor="end_date" className="mb-2">
                     End Date
                   </Label>
                   <Input
-                    id="endDate"
+                    id="end_date"
                     type="date"
-                    {...register("endDate", { required: "End date required" })}
+                    {...register("end_date", { required: "End date required" })}
                   />
-                  {formState.errors.endDate && (
+                  {formState.errors.end_date && (
                     <p className="text-xs text-red-600 mt-1">
-                      {formState.errors.endDate.message}
+                      {formState.errors.end_date.message}
                     </p>
                   )}
                 </div>

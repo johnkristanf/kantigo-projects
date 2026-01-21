@@ -33,7 +33,9 @@ async def get_all(session: AsyncSession = Depends(Database.get_async_session)):
 
 
 @projects_router.get("/{project_id}", response_model=ProjectResponse)
-async def get_by_id(project_id: int, session: AsyncSession = Depends(Database.get_async_session)):
+async def get_by_id(
+    project_id: int, session: AsyncSession = Depends(Database.get_async_session)
+):
     result = await session.execute(select(Projects).where(Projects.id == project_id))
     project = result.scalar_one_or_none()
     if not project:
@@ -62,7 +64,9 @@ async def update(
 
 
 @projects_router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete(project_id: int, session: AsyncSession = Depends(Database.get_async_session)):
+async def delete(
+    project_id: int, session: AsyncSession = Depends(Database.get_async_session)
+):
     result = await session.execute(select(Projects).where(Projects.id == project_id))
     project = result.scalar_one_or_none()
     if not project:

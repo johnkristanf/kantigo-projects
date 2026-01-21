@@ -5,20 +5,13 @@ export type Project = {
   name: string;
   description: string;
   status: ProjectStatus;
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
 };
 
-export type ProjectFormValues = {
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-};
-
-export const defaultProjectFormValues: ProjectFormValues = {
+export const defaultProjectFormValues: Partial<Project> = {
   name: "",
   description: "",
-  startDate: "",
-  endDate: "",
+  start_date: "",
+  end_date: "",
 };

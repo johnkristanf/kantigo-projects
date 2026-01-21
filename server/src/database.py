@@ -20,7 +20,7 @@ class Database:
             pool_recycle=3600,  # Recycle connections after 1 hour
             pool_timeout=30,  # Timeout after 30 seconds waiting for connection
             connect_args={
-                "ssl": "require",
+                "ssl": False,
                 "statement_cache_size": 0,
             },
         )

@@ -2,13 +2,11 @@ from datetime import datetime
 from pydantic import BaseModel
 from typing import Optional
 
-from src.models import Status
-
 
 class ProjectBase(BaseModel):
     name: str
     description: str
-    status: Status = Status.PENDING
+    status: str = "pending"
     start_date: datetime
     end_date: datetime
 
@@ -20,7 +18,7 @@ class ProjectCreate(ProjectBase):
 class ProjectUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
-    status: Optional[Status] = None
+    status: str = None
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
 

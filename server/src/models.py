@@ -1,4 +1,3 @@
-import enum
 from sqlalchemy import DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
@@ -29,9 +28,3 @@ class TimelineDateMixin:
         DateTime(timezone=True),
         nullable=False,
     )
-
-
-class Status(enum.Enum):
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
