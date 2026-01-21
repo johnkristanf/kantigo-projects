@@ -5,15 +5,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "~/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+} from "~/components/ui/select";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export default function ProjectsDashboardPage() {
   const [selectedProject, setSelectedProject] = useState("website-redesign");
@@ -140,7 +140,7 @@ export default function ProjectsDashboardPage() {
     return statusMatch && assigneeMatch;
   });
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case "Completed":
         return "text-emerald-700 bg-emerald-50 border border-emerald-200";
@@ -153,7 +153,7 @@ export default function ProjectsDashboardPage() {
     }
   };
 
-  const getPriorityColor = (priority) => {
+  const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "High":
         return "text-rose-700 bg-rose-50 border border-rose-200";
@@ -166,7 +166,7 @@ export default function ProjectsDashboardPage() {
     }
   };
 
-  const getWeightColor = (weight) => {
+  const getWeightColor = (weight: string) => {
     switch (weight) {
       case "Heavy":
         return "text-purple-700 bg-purple-50 border border-purple-200";

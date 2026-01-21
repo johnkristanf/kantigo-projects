@@ -1,10 +1,10 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "~/components/app-sidebar";
 
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "~/components/ui/sidebar";
 import { Outlet } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 

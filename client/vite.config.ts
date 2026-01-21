@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "app"), // Map '@' to the 'src' directory
+      "@": path.resolve(__dirname, "app"), 
     },
   },
   server: {
