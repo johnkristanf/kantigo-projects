@@ -23,12 +23,12 @@ export function ProjectCard({ project }: { project: Project }) {
         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
           <span>
             <strong className="text-blue-500">Start:</strong>{" "}
-            {formatDate(project.startDate)}
+            {formatDate(project.start_date)}
           </span>
           <span>–</span>
           <span>
             <strong className="text-blue-500">End:</strong>{" "}
-            {formatDate(project.endDate)}
+            {formatDate(project.end_date)}
           </span>
         </div>
         <span
@@ -40,7 +40,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 : "bg-gray-100 text-yellow-800"
           }`}
         >
-          {project.status.replace("_", " ")}
+          {project.status.replace("_", " ").toUpperCase()}
         </span>
       </CardContent>
     </Card>

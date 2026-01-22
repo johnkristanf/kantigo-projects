@@ -20,45 +20,23 @@ import {
   type Project,
 } from "~/types/projects";
 import { ProjectCard } from "~/components/project-card";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProjectsAPI } from "~/api/projects";
 import { toast } from "sonner";
 
-const initialProjects: Project[] = [
-  {
-    id: 1,
-    name: "Internal Tools Revamp",
-    description: "Redesign internal admin interfaces for efficiency.",
-    status: "IN_PROGRESS",
-    start_date: "2024-01-02",
-    end_date: "2024-06-15",
-  },
-  {
-    id: 2,
-    name: "Customer Portal Launch",
-    description: "Deploy new portal for customer self-service.",
-    status: "PENDING",
-    start_date: "2024-06-16",
-    end_date: "2024-11-01",
-  },
-  {
-    id: 3,
-    name: "Data Migration",
-    description: "Move legacy data to new cloud infrastructure.",
-    status: "COMPLETED",
-    start_date: "2023-10-10",
-    end_date: "2024-02-28",
-  },
-];
 
 export default function AdminProjectsPage() {
   const queryClient = useQueryClient();
 
-  const [projects, setProjects] = useState(initialProjects);
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset, formState } =
     useForm<Partial<Project>>({
       defaultValues: defaultProjectFormValues,
+    });
+
+    const { data: projects, isLoading, error } = useQuery({
+      queryKey: ['projects'],
+      queryFn: ProjectsAPI.getAll,
     });
 
     const createProjectMutation = useMutation({
@@ -86,9 +64,11 @@ export default function AdminProjectsPage() {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {projects.map((project) => (
+        {projects && projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
+
+        
         {/* Dashed new project container with modal trigger */}
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ChevronDown, User, Calendar } from "lucide-react";
+import { ChevronDown, User, Calendar, ClipboardList } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { CreateDialogForm } from "~/components/create-dialog-form";
+import { Label } from "~/components/ui/label";
+import { Input } from "~/components/ui/input";
+import { PrimaryButton } from "~/components/primary-button";
 
 export default function ProjectsDashboardPage() {
   const [selectedProject, setSelectedProject] = useState("website-redesign");
@@ -179,15 +183,20 @@ export default function ProjectsDashboardPage() {
     }
   };
 
+  type ExampleFormFields = {
+    name: string;
+    description: string;
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-100">
       {/* Navbar */}
-      <nav className="bg-linear-to-r from-blue-600 via-blue-500 to-indigo-600 text-white px-6 py-4 shadow-xl backdrop-blur-sm">
+      <nav className="bg-linear-to-r from-blue-700 via-blue-500 to-cyan-500 text-white px-6 py-4 shadow-xl backdrop-blur-sm">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
-            <Avatar className="w-12 h-12 border-4 border-white/30 shadow-xl">
+            <Avatar className="w-12 h-12 ">
               <AvatarImage src="/kantigo_logo.png" />
-              <AvatarFallback className="bg-white text-blue-600 text-xl font-bold">
+              <AvatarFallback className="bg-white text-blue-700 text-xl font-bold">
                 KantiGo Logo
               </AvatarFallback>
             </Avatar>
@@ -199,8 +208,8 @@ export default function ProjectsDashboardPage() {
 
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-3 hover:bg-white/20 px-4 py-2 rounded-xl transition-all focus:outline-none backdrop-blur-sm">
-              <div className="w-9 h-9 bg-linear-to-br from-white to-blue-50 rounded-full flex items-center justify-center shadow-md">
-                <User className="w-5 h-5 text-blue-600" />
+              <div className="w-9 h-9 bg-linear-to-br from-white to-blue-100 rounded-full flex items-center justify-center shadow-md">
+                <User className="w-5 h-5 text-blue-700" />
               </div>
               <span className="font-semibold">John Doe</span>
               <ChevronDown className="w-4 h-4" />
@@ -237,15 +246,15 @@ export default function ProjectsDashboardPage() {
           </div>
 
           {/* Project Overview Card */}
-          <div className="m-6 bg-linear-to-br from-blue-500 via-blue-600 to-indigo-700 text-white rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+          <div className="m-6 bg-linear-to-br from-blue-500 via-cyan-400 to-indigo-500 text-white rounded-2xl p-8 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-400/20 rounded-full blur-2xl -ml-24 -mb-24"></div>
 
             <div className="relative z-10">
-              <div className="flex items-center gap-4 mb-6">
-                <Avatar className="w-16 h-16 border-4 border-white/30 shadow-xl">
-                  <AvatarImage src="https://api.dicebear.com/7.x/initials/svg?seed={currentProject?.name}" />
-                  <AvatarFallback className="bg-white text-blue-600 text-xl font-bold">
+              <div className="flex items-center gap-3 mb-6">
+                <Avatar className="w-16 h-16 ">
+                  <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${currentProject?.name || ""}`} />
+                  <AvatarFallback className="bg-white text-blue-700 text-xl font-bold">
                     {currentProject?.name
                       .split(" ")
                       .map((word) => word[0])
@@ -262,13 +271,13 @@ export default function ProjectsDashboardPage() {
                     Task Progress
                   </span>
                   <span className="text-3xl font-bold">
-                    {currentProject?.completed} / {currentProject?.total}
+                    {currentProject?.completed} / {currentProject?.total} tasks
                   </span>
                 </div>
                 <div className="bg-white/20 rounded-full p-1 backdrop-blur-sm shadow-inner">
                   <div className="h-4 bg-white/30 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-linear-to-r from-yellow-300 via-amber-200 to-yellow-100 rounded-full transition-all duration-500 shadow-lg"
+                      className="h-full bg-white rounded-full transition-all duration-500 shadow-lg"
                       style={{ width: `${progressPercentage}%` }}
                     ></div>
                   </div>
@@ -283,7 +292,7 @@ export default function ProjectsDashboardPage() {
           {/* Tasks Table */}
           <div className="m-6 border-2 border-blue-100 rounded-xl overflow-hidden shadow-lg bg-white">
             {/* Filter Section */}
-            <div className="bg-linear-to-r from-slate-50 to-blue-50 p-4 border-b-2 border-blue-100">
+            <div className="bg-linear-to-r from-cyan-50 to-blue-100 p-4 border-b-2 border-blue-100">
               <div className="flex items-center gap-4">
                 <div className="w-full flex justify-end">
                   <div className="flex items-center gap-2">
@@ -320,6 +329,55 @@ export default function ProjectsDashboardPage() {
                         ))}
                       </SelectContent>
                     </Select>
+
+                    <CreateDialogForm<ExampleFormFields>
+                      title="Create Project"
+                      description="Fill in project details."
+                      defaultValues={{
+                        name: "",
+                        description: "",
+                      }}
+                      trigger={
+                        <PrimaryButton className="flex items-center gap-1">
+                          <ClipboardList className="size-5" /> 
+                          Add Tasks
+                        </PrimaryButton>
+                      }
+                      onSubmit={async (data) => {
+                        alert(`Submitted! Name: ${data.name}, Desc: ${data.description}`);
+                      }}
+                      
+                      submitButton={
+                        <PrimaryButton type="submit" className="flex items-center gap-1">
+                          Submit
+                        </PrimaryButton>
+                      }
+                      cancelLabel="Cancel"
+                    >
+                      {(form) => (
+                        <>
+                          <div>
+                            <Label htmlFor="name" className="mb-2">Project Name</Label>
+                            <Input
+                              id="name"
+                              {...form.register("name", { required: "Project name is required." })}
+                              placeholder="Project name"
+                            />
+                            {form.formState.errors.name && (
+                              <p className="text-xs text-red-600 mt-1">{form.formState.errors.name.message as string}</p>
+                            )}
+                          </div>
+                          <div>
+                            <Label htmlFor="description" className="mb-2">Description</Label>
+                            <Input
+                              id="description"
+                              {...form.register("description")}
+                              placeholder="Project description"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </CreateDialogForm>
                   </div>
                 </div>
 
@@ -341,7 +399,7 @@ export default function ProjectsDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-linear-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200">
+                  <tr className="bg-linear-to-r from-blue-100 to-indigo-50 border-b-2 border-blue-200">
                     <th className="text-left py-5 px-6 font-bold text-blue-900 text-sm uppercase tracking-wider">
                       Task Name
                     </th>
@@ -369,8 +427,8 @@ export default function ProjectsDashboardPage() {
                   {filteredTasks.map((task, index) => (
                     <tr
                       key={task.id}
-                      className={`border-b border-blue-50 hover:bg-linear-to-r hover:from-blue-50/50 hover:to-transparent transition-all ${
-                        index % 2 === 0 ? "bg-white" : "bg-slate-50/30"
+                      className={`border-b border-blue-50 hover:bg-linear-to-r hover:from-blue-50/60 hover:to-cyan-50/30 transition-all ${
+                        index % 2 === 0 ? "bg-white" : "bg-blue-50/30"
                       }`}
                     >
                       <td className="py-5 px-6 font-semibold text-slate-800">

@@ -7,6 +7,8 @@ export const ProjectsAPI = {
   // GET /projects
   getAll: async (): Promise<Project[]> => {
     const { data } = await api.get("/projects");
+    console.log("data: ", data);
+    
     return data;
   },
 
