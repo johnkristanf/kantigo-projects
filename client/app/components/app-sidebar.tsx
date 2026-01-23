@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { SearchForm } from "~/components/search-form";
-import { VersionSwitcher } from "~/components/version-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -22,7 +20,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+} from "~/components/ui/dropdown-menu";
 
 // This is sample data.
 const data = {
@@ -41,8 +39,8 @@ const data = {
           isActive: true,
         },
         {
-          title: "Users",
-          to: "admin/users",
+          title: "Teams",
+          to: "admin/teams",
         },
       ],
     },

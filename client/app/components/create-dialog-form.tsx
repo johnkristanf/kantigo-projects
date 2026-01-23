@@ -3,11 +3,6 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, Dialo
 import { Button } from "~/components/ui/button";
 import { useForm, type UseFormReturn, type FieldValues } from "react-hook-form";
 
-/**
- * Generic reusable dialog form using shadcn and react-hook-form.
- *
- * @template T - should extend FieldValues for compatibility with react-hook-form
- */
 interface CreateDialogFormProps<T extends FieldValues> {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -38,7 +33,7 @@ export function CreateDialogForm<T extends FieldValues>({
   const [internalOpen, setInternalOpen] = useState(false);
   const form = useForm<T>({ defaultValues });
 
-  const handleSubmit = form.handleSubmit(async (data) => {
+  const handleSubmit = form.handleSubmit(async (data) => {    
     await onSubmit(data);
     setInternalOpen(false);
     onOpenChange?.(false);

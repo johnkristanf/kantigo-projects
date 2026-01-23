@@ -25,7 +25,7 @@ import { ProjectsAPI } from "~/api/projects";
 import { toast } from "sonner";
 
 
-export default function AdminProjectsPage() {
+export default function ProjectsPage() {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);

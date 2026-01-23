@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.teams.router import teams_router
 from src.tasks.router import tasks_router
 from src.projects.router import projects_router
 from src.database import Database
@@ -29,6 +30,7 @@ api_v1_router = group(
     "/api/v1",
     (projects_router, "/projects", ["Projects"]),
     (tasks_router, "/tasks", ["Tasks"]),
+    (teams_router, "/teams", ["Teams"]),
 )
 
 app.include_router(api_v1_router)
