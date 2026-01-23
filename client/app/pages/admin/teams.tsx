@@ -1,15 +1,5 @@
-import { useState } from "react";
 import { Plus } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogClose,
-  DialogDescription,
-  DialogTrigger,
-} from "~/components/ui/dialog";
+
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
@@ -27,6 +17,8 @@ import { CreateDialogForm } from "~/components/create-dialog-form";
 import type { Team } from "~/types/teams";
 import { PrimaryButton } from "~/components/primary-button";
 import { TeamsAPI } from "~/api/teams";
+import { DataTable } from "~/components/data-table";
+import { teamColumns } from "~/components/teams/columns";
 
 
 export default function TeamsPage() {
@@ -59,7 +51,9 @@ export default function TeamsPage() {
           Manage all teams within your company or organization.
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+      <div className="flex justify-end mb-4">
+
 
       <CreateDialogForm<Partial<Team>>
                         title="Create Team"
@@ -118,9 +112,20 @@ export default function TeamsPage() {
                           </>
                         )}
                       </CreateDialogForm>
+                      </div>
 
+                      {error ? (
+                        <div className="flex items-center justify-center py-8">
+                          <span className="text-red-600">Error loading teams, please try again.</span>
+                        </div>
+                      ) : teams ? (
+                        <DataTable data={teams} columns={teamColumns} />
+                      ) : (
+                        <div className="flex items-center justify-center py-8">
+                          <span className="text-muted-foreground">Loading teams...</span>
+                        </div>
+                      )}
 
-      </div>
     </section>
   );
 }

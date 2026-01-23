@@ -8,6 +8,7 @@ export default [
     ...prefix("admin", [
       route("projects", "./pages/admin/projects.tsx"),
       route("teams", "./pages/admin/teams.tsx"),
+      route("members", "./pages/admin/members.tsx"),
     ]),
   ]),
 

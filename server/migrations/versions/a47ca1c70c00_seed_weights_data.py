@@ -31,7 +31,6 @@ def upgrade() -> None:
         weights_data = json.load(f)
 
     conn = op.get_bind()
-    # Check which tags already exist
     tags = [w['tag'] for w in weights_data]
     existing = conn.execute(
         sa.text("SELECT tag FROM weights WHERE tag = ANY(:tags)"),

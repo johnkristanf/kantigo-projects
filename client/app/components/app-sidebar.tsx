@@ -42,6 +42,11 @@ const data = {
           title: "Teams",
           to: "admin/teams",
         },
+
+        {
+          title: "Members",
+          to: "admin/members",
+        },
       ],
     },
   ],

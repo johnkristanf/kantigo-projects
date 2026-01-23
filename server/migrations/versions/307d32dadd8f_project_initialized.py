@@ -25,9 +25,9 @@ def upgrade() -> None:
     op.create_table(
         "users",
         sa.Column("id", sa.Integer(), primary_key=True, index=True, nullable=False),
+        sa.Column("name", sa.String(length=150), nullable=False),
         sa.Column("username", sa.String(length=50), unique=True, index=True, nullable=False),
-        sa.Column("email", sa.String(length=120), unique=True, index=True, nullable=False),
-        sa.Column("hashed_password", sa.String(length=128), nullable=False),
+        sa.Column("password", sa.String(length=255), nullable=False),
         
         # TimestampMixin
         sa.Column(

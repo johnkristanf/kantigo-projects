@@ -1,0 +1,39 @@
+[
+  {
+    "tag": "lead_dev",
+    "name": "Lead Developer"
+  },
+  {
+    "tag": "swe",
+    "name": "Software Engineer"
+  },
+  {
+    "tag": "senior_eng",
+    "name": "Senior Engineer"
+  },
+  {
+    "tag": "principal_eng",
+    "name": "Principal Engineer"
+  },
+  {
+    "tag": "staff_eng",
+    "name": "Staff Engineer"
+  },
+  {
+    "tag": "qa",
+    "name": "Quality Assurance Engineer"
+  },
+  {
+    "tag": "product_mgr",
+    "name": "Product Manager"
+  },
+  {
+    "tag": "hr_mgr",
+    "name": "HR Manager"
+  },
+  {
+    "tag": "designer",
+    "name": "Designer"
+  }
+
+]
