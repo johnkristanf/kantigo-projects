@@ -19,6 +19,8 @@ import {  cn,  getStatusStyle } from '~/lib/utils';
 import { TaskCards } from '~/components/task-cards';
 import { NavBar } from '~/components/navbar';
 import { ProjectOverviewCard } from '~/components/project-overview-card';
+import { useQuery } from '@tanstack/react-query';
+import { TasksAPI } from '~/api/tasks';
 
 export default function ProjectsDashboardPage() {
   const [selectedProject, setSelectedProject] = useState('website-redesign');
@@ -52,6 +54,16 @@ export default function ProjectsDashboardPage() {
     'In Progress': tasks.filter(task => task.status === 'In Progress'),
     'Completed': tasks.filter(task => task.status === 'Completed'),
   };
+
+  const weightsQuery = useQuery({
+    queryKey: ['weights'],
+    queryFn: TasksAPI.getAllWeights,
+  });
+
+  const prioritiesQuery = useQuery({
+    queryKey: ['priorities'],
+    queryFn: TasksAPI.getAllPriorities,
+  });
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
@@ -128,38 +140,53 @@ export default function ProjectsDashboardPage() {
                                 <p className={cn("text-xs text-red-600 mt-1")}>{form.formState.errors.name.message as string}</p>
                               )}
                             </div>
+
+                            {/* PRIORITY */}
                             <div className={cn("mb-4 w-full")}>
                               <Label htmlFor="priority" className={cn("mb-2")}>Priority</Label>
                               <Select
                                 onValueChange={val => form.setValue("priority" as any, val)}
                                 value={form.watch("priority" as any) || ""}
+                                disabled={prioritiesQuery.isLoading}
                               >
                                 <SelectTrigger id="priority" className={cn("w-full")}>
-                                  <SelectValue placeholder="Select priority" />
+                                  <SelectValue placeholder={prioritiesQuery.isLoading ? "Loading priorities..." : "Select priority"} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="High">High</SelectItem>
-                                  <SelectItem value="Medium">Medium</SelectItem>
-                                  <SelectItem value="Low">Low</SelectItem>
+                                  {prioritiesQuery.isLoading ? (
+                                    <div className="p-2 text-center text-gray-500 text-sm">Loading...</div>
+                                  ) : (
+                                    (prioritiesQuery.data ?? []).map(priority => (
+                                      <SelectItem key={priority.id} value={priority.id.toString()}>
+                                        {priority.name}
+                                      </SelectItem>
+                                    ))
+                                  )}
                                 </SelectContent>
                               </Select>
-                              {form.formState.errors && (form.formState.errors as any).priority && (
-                                <p className={cn("text-xs text-red-600 mt-1")}>{(form.formState.errors as any).priority.message as string}</p>
-                              )}
                             </div>
+
+                            {/* WEIGHTS */}
                             <div className={cn("mb-4 w-full")}>
                               <Label htmlFor="weight" className={cn("mb-2")}>Weight</Label>
                               <Select
                                 onValueChange={val => form.setValue("weight" as any, val)}
                                 value={form.watch("weight" as any) || ""}
+                                disabled={weightsQuery.isLoading}
                               >
                                 <SelectTrigger id="weight" className={cn("w-full")}>
-                                  <SelectValue placeholder="Select weight" />
+                                  <SelectValue placeholder={weightsQuery.isLoading ? "Loading weights..." : "Select weight"} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="Heavy">Heavy</SelectItem>
-                                  <SelectItem value="Medium">Medium</SelectItem>
-                                  <SelectItem value="Light">Light</SelectItem>
+                                  {weightsQuery.isLoading ? (
+                                    <div className="p-2 text-center text-gray-500 text-sm">Loading...</div>
+                                  ) : (
+                                    (weightsQuery.data ?? []).map(weight => (
+                                      <SelectItem key={weight.id} value={weight.id.toString()}>
+                                        {weight.name}
+                                      </SelectItem>
+                                    ))
+                                  )}
                                 </SelectContent>
                               </Select>
                               {form.formState.errors && (form.formState.errors as any).weight && (
