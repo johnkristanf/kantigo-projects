@@ -1,0 +1,28 @@
+[
+  {
+    "tag": "XS",
+    "name": "Extra Small",
+    "points": 1
+  },
+  {
+    "tag": "S",
+    "name": "Small",
+    "points": 2
+  },
+  {
+    "tag": "M",
+    "name": "Medium",
+    "points": 3
+  },
+  {
+    "tag": "L",
+    "name": "Large",
+    "points": 5
+  },
+  {
+    "tag": "XL",
+    "name": "Extra Large",
+    "points": 8
+  }
+
+]

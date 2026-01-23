@@ -1,0 +1,16 @@
+[
+
+  {
+    "tag": "low",
+    "name": "Low"
+  },
+  {
+    "tag": "medium",
+    "name": "Medium"
+  },
+  {
+    "tag": "high",
+    "name": "High"
+  }
+
+]

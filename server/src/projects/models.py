@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String, Text
-from datetime import datetime
 from src.database import Base
 from src.models import TimelineDateMixin, TimestampMixin
 
