@@ -1,22 +1,19 @@
 import { Plus, X } from "lucide-react";
 
 import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
 import { Label } from "~/components/ui/label";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { CreateDialogForm } from "~/components/create-dialog-form";
-import type { Team } from "~/types/teams";
 import { PrimaryButton } from "~/components/primary-button";
-import { TeamsAPI } from "~/api/teams";
 import { DataTable } from "~/components/data-table";
-import { teamColumns } from "~/components/teams/columns";
 import { UsersAPI } from "~/api/users";
 import { cn } from "~/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Badge } from "~/components/ui/badge";
 import type { CreateUser, User } from "~/types/users";
+import { memberColumns } from "~/components/members/columns";
 
 export default function MembersPage() {
   const queryClient = useQueryClient();
@@ -26,11 +23,16 @@ export default function MembersPage() {
     queryFn: UsersAPI.getAllPositions,
   });
 
+  const membersQuery = useQuery({
+    queryKey: ['members'],
+    queryFn: UsersAPI.getAllMembers,
+  });
+
   const createMemberMutation = useMutation({
     mutationFn: UsersAPI.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['teams'] });
-      toast.success("Team created successfully!")
+      queryClient.invalidateQueries({ queryKey: ['members'] });
+      toast.success("Member created successfully!")
     },
   })
 
@@ -218,6 +220,18 @@ export default function MembersPage() {
           }}
         </CreateDialogForm>
       </div>
+
+      {membersQuery.error ? (
+                        <div className="flex items-center justify-center py-8">
+                          <span className="text-red-600">Error loading members, please try again.</span>
+                        </div>
+                      ) : membersQuery.data ? (
+                        <DataTable data={membersQuery.data} columns={memberColumns} />
+                      ) : (
+                        <div className="flex items-center justify-center py-8">
+                          <span className="text-muted-foreground">Loading members...</span>
+                        </div>
+                      )}
     </section>
   );
 }

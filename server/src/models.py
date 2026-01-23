@@ -1,6 +1,8 @@
-from sqlalchemy import DateTime, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, Table, func
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
+
+from src.database import Base
 
 
 class TimestampMixin:
@@ -28,3 +30,17 @@ class TimelineDateMixin:
         DateTime(timezone=True),
         nullable=False,
     )
+
+
+# ASSOCIATION TABLES
+team_members = Table(
+    "team_members",
+    Base.metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
+    Column(
+        "team_id", Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False
+    ),
+    Column(
+        "user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    ),
+)

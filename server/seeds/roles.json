@@ -1,0 +1,10 @@
+[
+  {
+    "tag": "admin",
+    "name": "Administrator"
+  },
+  {
+    "tag": "member",
+    "name": "Member"
+  }
+]

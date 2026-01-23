@@ -1,4 +1,4 @@
-import type { CreateUser, Postions, User } from "~/types/users";
+import type { CreateUser, Postions, User, UserWithRolesPositions } from "~/types/users";
 import api from "./api";
 
 export const UsersAPI = {
@@ -9,6 +9,11 @@ export const UsersAPI = {
 
   getAllPositions: async (): Promise<Postions[]> => {
     const { data } = await api.get("/users/positions");
+    return data;
+  },
+
+  getAllMembers: async (): Promise<UserWithRolesPositions[]> => {
+    const { data } = await api.get("/users/members");
     return data;
   },
 
