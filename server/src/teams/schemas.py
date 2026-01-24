@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 
 
 from datetime import datetime
+from src.user.schemas import UserResponse
 from src.user.models import Users
 
 
@@ -22,7 +23,7 @@ class CreateTeamMembers(BaseModel):
 
 class TeamResponse(TeamBase):
     id: int
-    members: List[Users] = None
+    members: List[UserResponse] = None
     created_at: datetime
     updated_at: datetime
 
