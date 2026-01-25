@@ -37,7 +37,6 @@ export default function MembersPage() {
   })
 
   const handleCreateMember = (data: CreateUser) => {
-    console.log("data submit: ", data);
     createMemberMutation.mutate(data);
   }
 

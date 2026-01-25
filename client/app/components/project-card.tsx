@@ -25,27 +25,42 @@ export function ProjectCard({ project }: { project: Project }) {
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
   const queryClient = useQueryClient();
 
+  const assignedTeamsQuery = useQuery({
+    queryKey: ['teams_under_project', project.id],
+    queryFn: () => TeamsAPI.getTeamsUnderProject(project.id),
+    enabled: !!project.id,
+  });
+
   const teamsQuery = useQuery({
     queryKey: ['teams'],
     queryFn: TeamsAPI.getAll,
   });
 
-  const teamsComboBoxOption = (teamsQuery?.data ?? []).map(u => ({
-    ...u,
-    id: u.id,
-    label: u.name
-  }));
 
+  let unAssignedTeams: Team[] = [];
+  if (teamsQuery.data && assignedTeamsQuery.data) {
+    const teamMemberIds = new Set(assignedTeamsQuery.data.map((t: Team) => t.id));
+    unAssignedTeams = teamsQuery.data.filter((t: Team) => !teamMemberIds.has(t.id));
+  } else if (teamsQuery.data) {
+    unAssignedTeams = teamsQuery.data;
+  }
+
+  const teamsComboBoxOption = (unAssignedTeams ?? []).map(t => ({
+    ...t,
+    id: t.id,
+    label: t.name
+  }));
 
   const assignTeamsMutation = useMutation({
     mutationFn: ProjectsAPI.assignTeams,
     onSuccess: () => {
       toast.success("Teams successfully assigned to the project!");
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['teams_under_project'] });
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
     },
   });
 
-  // Handle submission of assigning teams to a project
   const handleAssignTeams = async (data: Team[]) => {
     const payload = {
       projectId: project.id,
@@ -74,13 +89,13 @@ export function ProjectCard({ project }: { project: Project }) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="w-8 h-8 text-muted-foreground focus:outline-none"
+                className="w-8 h-8 focus:outline-none hover:cursor-pointer hover:opacity-75"
                 aria-label="Project actions"
               >
                 <Ellipsis className="w-5 h-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent >
               <DropdownMenuItem asChild>
                 {/* Use a span (not button) for trigger! */}
                 <CreateDialogForm<Partial<Project>>
@@ -107,7 +122,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 >
                   {() => (
                     <>
-                      <Label className="mb-2 mt-3 block">Select team(s)</Label>
+                      <Label className="mb-2 mt-3 block">List of Unassigned Teams</Label>
                       {teamsQuery.isLoading ? (
                         <div className="text-muted-foreground py-2">Loading members...</div>
                       ) : teamsQuery.error ? (
@@ -119,13 +134,39 @@ export function ProjectCard({ project }: { project: Project }) {
                           setSelected={setSelectedTeams}
                           renderSelectedLabel={team => team.name}
                           renderOptionLabel={team => team.name}
-                          placeholder={''}
+                          category="teams"
+                          placeholder={'Select team(s)...'}
                           searchPlaceholder={"Search teams..."}
                         />
                       )}
 
                       <Label className="mb-1 mt-8 block">Current Assigned Team</Label>
-                      {/* ...Team members section omitted for brevity... */}
+                      {assignedTeamsQuery.isLoading ? (
+                        <div className="text-muted-foreground py-2">Loading assigned teams...</div>
+                      ) : assignedTeamsQuery.error ? (
+                        <div className="text-destructive py-2">Failed to load assigned teams.</div>
+                      ) : !assignedTeamsQuery.data || assignedTeamsQuery.data.length === 0 ? (
+                        <div className="text-muted-foreground py-2">No teams yet for this project.</div>
+                      ) : (
+                        <div className="flex flex-wrap gap-3 mt-2 mb-2">
+                          {assignedTeamsQuery.data.map((team: any) => (
+                            <div
+                              key={team.id}
+                              className="flex items-center gap-2 px-2 py-1 rounded border border-muted bg-muted/40"
+                            >
+                              <Avatar className="h-7 w-7 text-sm">
+                                <AvatarFallback>
+                                  {getInitials(team.name)}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="flex flex-col">
+                                <span className="font-medium text-sm">{team.name}</span>
+                                <span className="text-xs text-muted-foreground">{team.description}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </>
                   )}
                 </CreateDialogForm>

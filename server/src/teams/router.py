@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.future import select
 
+from src.projects.models import Projects
 from src.user.models import Users
 from src.teams.schemas import CreateTeamMembers, TeamCreate, TeamResponse
 from src.teams.models import Teams
@@ -62,7 +63,7 @@ async def get_all(session: AsyncSession = Depends(Database.get_async_session)):
 
 
 @teams_router.get(
-    "/by_project/{project_id}",
+    "/project/{project_id}",
     response_model=list[TeamResponse],
     status_code=status.HTTP_200_OK,
 )
@@ -70,6 +71,10 @@ async def get_teams_by_project(
     project_id: int,
     session: AsyncSession = Depends(Database.get_async_session),
 ):
-    result = await session.execute(select(Teams).where(Teams.project_id == project_id))
+    result = await session.execute(
+        select(Teams)
+        .join(Teams.projects)
+        .where(Projects.id == project_id)
+    )
     teams = result.scalars().all()
     return teams

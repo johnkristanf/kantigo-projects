@@ -72,7 +72,7 @@ export default function ProjectsPage() {
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <button
-              className="flex flex-col items-center justify-center border-2 border-dashed border-blue-500 rounded-lg p-6 h-full min-h-[160px] hover:bg-primary/5 transition-colors focus:outline-none"
+              className="flex flex-col items-center justify-center border-2 border-dashed border-blue-500 rounded-lg p-6 h-full min-h-[160px] hover:bg-primary/5 hover:cursor-pointer hover:opacity-75 transition-colors focus:outline-none"
               aria-label="Add new project"
             >
               <Plus className="w-8 h-8 mb-2 text-blue-500" />

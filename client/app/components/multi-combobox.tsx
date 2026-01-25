@@ -13,6 +13,7 @@ type MultiSelectComboboxProps<T extends ComboboxOption> = {
     setSelected: Dispatch<SetStateAction<T[]>>
     renderOptionLabel?: (option: T) => React.ReactNode
     renderSelectedLabel?: (option: T) => React.ReactNode
+    category: string
     placeholder?: string
     searchPlaceholder?: string
     disabled?: boolean
@@ -24,6 +25,7 @@ export function MultiSelectCombobox<T extends ComboboxOption>({
     setSelected,
     renderOptionLabel,
     renderSelectedLabel,
+    category,
     placeholder,
     searchPlaceholder = "Search...",
     disabled = false,
@@ -200,7 +202,7 @@ export function MultiSelectCombobox<T extends ComboboxOption>({
                             </div>
                         ) : (
                             <div className="py-6 text-center text-sm text-muted-foreground">
-                                No items found.
+                                No {category} found.
                             </div>
                         )}
                     </div>
