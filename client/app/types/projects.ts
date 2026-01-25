@@ -20,15 +20,21 @@ export const defaultProjectFormValues: Partial<Project> = {
 export type Task = {
   id: number;
   name: string;
-  start_date: string;      // ISO string representing timestamp
-  end_date: string;        // ISO string representing timestamp
+  start_date: string;     
+  end_date: string;       
   status: number;
   project_id: number;
   weight_id: number;
   assignee_id: number;
-  created_at: string;      // ISO string representing timestamp
-  updated_at: string;      // ISO string representing timestamp
+  created_at: string;     
+  updated_at: string;     
 };
+
+export type AssignTeamsToProject = {
+  projectId: number;
+  teamIds: number[];
+};
+
 
 
 export enum TaskStatus {

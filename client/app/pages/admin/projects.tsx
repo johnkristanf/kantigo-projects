@@ -34,24 +34,23 @@ export default function ProjectsPage() {
       defaultValues: defaultProjectFormValues,
     });
 
-    const { data: projects, isLoading, error } = useQuery({
-      queryKey: ['projects'],
-      queryFn: ProjectsAPI.getAll,
-    });
+  const { data: projects, isLoading, error } = useQuery({
+    queryKey: ['projects'],
+    queryFn: ProjectsAPI.getAll,
+  });
 
-    const createProjectMutation = useMutation({
-      mutationFn: ProjectsAPI.create,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['projects'] });
-        toast.success("Project created successfully!")
-        reset();
-        setOpen(false);
-      },
-    })
+  const createProjectMutation = useMutation({
+    mutationFn: ProjectsAPI.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      toast.success("Project created successfully!")
+      reset();
+      setOpen(false);
+    },
+  })
 
 
   const onSubmit = (data: Partial<Project>) => {
-    console.log("data submit: ", data);
     createProjectMutation.mutate(data);
   }
 
@@ -68,7 +67,7 @@ export default function ProjectsPage() {
           <ProjectCard key={project.id} project={project} />
         ))}
 
-        
+
         {/* Dashed new project container with modal trigger */}
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>

@@ -44,3 +44,19 @@ team_members = Table(
         "user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     ),
 )
+
+
+project_teams = Table(
+    "project_teams",
+    Base.metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
+    Column(
+        "project_id",
+        Integer,
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+    ),
+    Column(
+        "team_id", Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False
+    ),
+)

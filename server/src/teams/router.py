@@ -39,12 +39,12 @@ async def add_members(
     users_result = await session.execute(
         select(Users).where(Users.id.in_(data.user_ids))
     )
-    users = users_result.scalars().all()
 
+    users = users_result.scalars().all()
     if not users or len(users) != len(data.user_ids):
         raise HTTPException(status_code=404, detail="One or more users not found")
 
-    # Add users to team
+    # Add users to team (avoid duplicates)
     team.users.extend([user for user in users if user not in team.users])
 
     await session.commit()
@@ -57,5 +57,19 @@ async def add_members(
 )
 async def get_all(session: AsyncSession = Depends(Database.get_async_session)):
     result = await session.execute(select(Teams))
+    teams = result.scalars().all()
+    return teams
+
+
+@teams_router.get(
+    "/by_project/{project_id}",
+    response_model=list[TeamResponse],
+    status_code=status.HTTP_200_OK,
+)
+async def get_teams_by_project(
+    project_id: int,
+    session: AsyncSession = Depends(Database.get_async_session),
+):
+    result = await session.execute(select(Teams).where(Teams.project_id == project_id))
     teams = result.scalars().all()
     return teams

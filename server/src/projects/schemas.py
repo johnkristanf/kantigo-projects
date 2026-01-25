@@ -30,3 +30,7 @@ class ProjectResponse(ProjectBase):
 
     class Config:
         from_attributes = True
+
+
+class AddTeamsToProject(BaseModel):
+    team_ids: list[int]

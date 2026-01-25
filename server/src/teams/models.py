@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Text, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from src.database import Base
-from src.models import TimestampMixin, team_members
+from src.models import TimestampMixin, project_teams, team_members
 
 class Teams(TimestampMixin, Base):
     __tablename__ = "teams"
@@ -13,6 +13,13 @@ class Teams(TimestampMixin, Base):
     users = relationship(
         "Users",
         secondary=team_members,
+        back_populates="teams",
+        lazy="selectin",
+    )
+    
+    projects = relationship(
+        "Projects",
+        secondary=project_teams,
         back_populates="teams",
         lazy="selectin",
     )

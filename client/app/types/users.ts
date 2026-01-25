@@ -23,8 +23,7 @@ export type User = {
 };
 
 // Merge type using declaration merging pattern
-export interface UserWithRolesPositions extends User {
-  roles: Role[];
+export interface UserWithPositions extends User {
   positions: Position[];
 }
 
@@ -42,4 +41,10 @@ export type Postions = {
     name: string; 
     created_at: string; 
     updated_at: string 
+}
+
+
+export type AddTeamMembers = {
+  team_id: number;
+  user_ids: number[]
 }

@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy.orm import relationship
 from src.database import Base
-from src.models import TimelineDateMixin, TimestampMixin
+from src.models import TimelineDateMixin, TimestampMixin, project_teams
 
 
 class Projects(TimelineDateMixin, TimestampMixin, Base):
@@ -10,3 +11,10 @@ class Projects(TimelineDateMixin, TimestampMixin, Base):
     name = Column(String(50), nullable=False)
     description = Column(Text, nullable=False)
     status = Column(String(50), default="pending")
+
+    teams = relationship(
+        "Teams",
+        secondary=project_teams,
+        back_populates="projects",
+        lazy="selectin",
+    )

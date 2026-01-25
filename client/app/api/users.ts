@@ -1,5 +1,6 @@
-import type { CreateUser, Postions, User, UserWithRolesPositions } from "~/types/users";
+import type { AddTeamMembers, CreateUser, Postions, User, UserWithPositions } from "~/types/users";
 import api from "./api";
+import type { Team } from "~/types/teams";
 
 export const UsersAPI = {
   getAll: async (): Promise<User[]> => {
@@ -12,14 +13,25 @@ export const UsersAPI = {
     return data;
   },
 
-  getAllMembers: async (): Promise<UserWithRolesPositions[]> => {
-    const { data } = await api.get("/users/members");
+  getAllMembers: async (): Promise<UserWithPositions[]> => {
+    const { data } = await api.get("/users/all/members");
     return data;
   },
 
-  create: async (user: CreateUser) => {
-    const { data } = await api.post("/users", user);
+  getMembersWithinTeam: async (teamId: number): Promise<UserWithPositions[]> => {
+    const { data } = await api.get(`/users/members/${teamId}`);
     return data;
   },
+
+  create: async (payload: CreateUser) => {
+    const { data } = await api.post("/users", payload);
+    return data;
+  },
+
+  addTeamMembers: async (payload: AddTeamMembers): Promise<Team> => {
+    const { data } = await api.post("/teams/add/members", payload);
+    return data;
+  },
+
 
 }

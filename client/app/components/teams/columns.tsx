@@ -26,7 +26,30 @@ export const teamColumns: ColumnDef<Team>[] = [
     header: "Actions",
     cell: ({ row }) => {
       return (
-        <AddTeamMember team={row.original} />
+        <div className="flex items-center gap-2">
+
+          <AddTeamMember team={row.original} />
+
+          <button
+            onClick={() => {
+              // Placeholder for edit logic
+              alert(`Edit team ${row.original.name}`);
+            }}
+            className="text-blue-600 hover:underline"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              // Placeholder for delete logic
+              alert(`Delete team ${row.original.name}`);
+            }}
+            className="text-red-600 hover:underline"
+          >
+            Delete
+          </button>
+        </div>
+
       )
     },
   },

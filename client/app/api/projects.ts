@@ -1,4 +1,5 @@
 import type {
+  AssignTeamsToProject,
   Project,
 } from "~/types/projects";
 import api from "./api";
@@ -9,6 +10,14 @@ export const ProjectsAPI = {
     const { data } = await api.get("/projects");
     console.log("data: ", data);
     
+    return data;
+  },
+
+  // Assign teams to a project
+  assignTeams: async (payload: AssignTeamsToProject): Promise<Project> => {
+    const { data } = await api.post(`/projects/assign/teams/${payload.projectId}`, {
+      team_ids: payload.teamIds,
+    });
     return data;
   },
 
