@@ -59,6 +59,8 @@ async def assign_teams_to_project(
     return project
 
 
+
+
 @projects_router.get("/", response_model=list[ProjectResponse])
 async def get_all(session: AsyncSession = Depends(Database.get_async_session)):
     result = await session.execute(select(Projects))

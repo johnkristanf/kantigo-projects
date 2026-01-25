@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from src.models import TimelineDateMixin, TimestampMixin
+from src.models import TimelineDateMixin, TimestampMixin, project_tasks
 from src.database import Base
 
 
@@ -14,6 +15,13 @@ class Tasks(TimelineDateMixin, TimestampMixin, Base):
     project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
     weight_id = Column(Integer, ForeignKey("weights.id"), nullable=True)
     assignee_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
+    projects = relationship(
+        "Projects",
+        secondary=project_tasks,
+        back_populates="tasks",
+        lazy="selectin",
+    )
 
 
 class Weights(TimestampMixin, Base):

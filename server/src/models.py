@@ -60,3 +60,18 @@ project_teams = Table(
         "team_id", Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False
     ),
 )
+
+project_tasks = Table(
+    "project_tasks",
+    Base.metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True, nullable=False),
+    Column(
+        "project_id",
+        Integer,
+        ForeignKey("projects.id", ondelete="CASCADE"),
+        nullable=False,
+    ),
+    Column(
+        "task_id", Integer, ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False
+    ),
+)
