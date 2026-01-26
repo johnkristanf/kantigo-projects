@@ -1,7 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from src.teams.models import Teams
+from src.user.models import Users
+from src.models import team_members, project_teams
 from src.database import Database
 from src.projects.schemas import (
     AddTeamsToProject,
@@ -25,40 +28,6 @@ async def create(
     await session.commit()
     await session.refresh(project)
     return project
-
-
-@projects_router.post(
-    "/assign/teams/{project_id}",
-    response_model=ProjectResponse,
-    status_code=status.HTTP_200_OK,
-)
-async def assign_teams_to_project(
-    project_id: int,
-    data: AddTeamsToProject,
-    session: AsyncSession = Depends(Database.get_async_session),
-):
-    # Fetch the Project
-    result = await session.execute(select(Projects).where(Projects.id == project_id))
-    project = result.scalar_one_or_none()
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found")
-
-    # Fetch Teams by their IDs
-    teams_result = await session.execute(
-        select(Teams).where(Teams.id.in_(data.team_ids))
-    )
-    teams = teams_result.scalars().all()
-    if not teams or len(teams) != len(set(data.team_ids)):
-        raise HTTPException(status_code=404, detail="One or more teams not found")
-
-    # Add teams to project (avoid duplicates)
-    project.teams.extend([team for team in teams if team not in project.teams])
-
-    await session.commit()
-    await session.refresh(project)
-    return project
-
-
 
 
 @projects_router.get("/", response_model=list[ProjectResponse])
@@ -110,3 +79,61 @@ async def delete(
     await session.delete(project)
     await session.commit()
     return None
+
+
+@projects_router.post(
+    "/assign/teams/{project_id}",
+    response_model=ProjectResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def assign_teams_to_project(
+    project_id: int,
+    data: AddTeamsToProject,
+    session: AsyncSession = Depends(Database.get_async_session),
+):
+    # Fetch the Project
+    result = await session.execute(select(Projects).where(Projects.id == project_id))
+    project = result.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    # Fetch Teams by their IDs
+    teams_result = await session.execute(
+        select(Teams).where(Teams.id.in_(data.team_ids))
+    )
+    teams = teams_result.scalars().all()
+    if not teams or len(teams) != len(set(data.team_ids)):
+        raise HTTPException(status_code=404, detail="One or more teams not found")
+
+    # Add teams to project (avoid duplicates)
+    project.teams.extend([team for team in teams if team not in project.teams])
+
+    await session.commit()
+    await session.refresh(project)
+    return project
+
+
+@projects_router.get("/user/{user_id}", response_model=list[ProjectResponse])
+async def get_projects_by_user(
+    user_id: int, session: AsyncSession = Depends(Database.get_async_session)
+):
+    user_result = await session.execute(select(Users).where(Users.id == user_id))
+    user = user_result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Query projects through: Users -> team_members -> Teams -> project_teams -> Projects
+    stmt = (
+        select(Projects)
+        .join(project_teams, Projects.id == project_teams.c.project_id)
+        .join(Teams, project_teams.c.team_id == Teams.id)
+        .join(team_members, Teams.id == team_members.c.team_id)
+        .join(Users, team_members.c.user_id == Users.id)
+        .where(Users.id == user_id)
+        .distinct()
+        .options(selectinload(Projects.teams), selectinload(Projects.tasks))
+    )
+    
+    result = await session.execute(stmt)
+    projects = result.scalars().all()
+    return projects

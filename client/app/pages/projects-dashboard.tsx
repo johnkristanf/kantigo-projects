@@ -21,10 +21,22 @@ import { NavBar } from '~/components/navbar';
 import { ProjectOverviewCard } from '~/components/project-overview-card';
 import { useQuery } from '@tanstack/react-query';
 import { TasksAPI } from '~/api/tasks';
+import { ProjectsAPI } from '~/api/projects';
 
 export default function ProjectsDashboardPage() {
   const [selectedProject, setSelectedProject] = useState('website-redesign');
   const [filterAssignee, setFilterAssignee] = useState('all');
+  const userID = 1;
+
+  const teamMembersQuery = useQuery({
+    queryKey: ['projects_per_user', userID],
+    queryFn: async () => {
+      const data = await ProjectsAPI.getProjectsUnderUser(userID);
+      console.log("data getProjectsUnderUser: ", data);
+      
+      return data;
+    },
+  });
 
   const projects = [
     { id: 'website-redesign', name: 'Website Redesign', completed: 41, total: 50 },

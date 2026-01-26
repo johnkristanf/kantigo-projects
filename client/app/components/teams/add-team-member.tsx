@@ -79,7 +79,7 @@ export const AddTeamMember = ({ team }: { team: Team }) => {
     >
       {() => (
         <>
-          <Label className="mb-2 mt-3 block">Select member(s)</Label>
+          <Label className="mb-2 mt-3 block">List of unassigned member(s)</Label>
           {membersQuery.isLoading || teamMembersQuery.isLoading ? (
             <div className="text-muted-foreground py-2">Loading members...</div>
           ) : membersQuery.error || teamMembersQuery.error ? (

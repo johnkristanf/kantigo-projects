@@ -5,9 +5,15 @@ type UsersComboboxProps = {
     userLists: UserWithPositions[]
     selectedUsers: User[]
     setSelectedUsers: Dispatch<SetStateAction<User[]>>
+    placeholder?: string
 }
 
-export const UsersCombobox = ({ userLists, selectedUsers, setSelectedUsers }: UsersComboboxProps) => {
+export const UsersCombobox = ({
+    userLists,
+    selectedUsers,
+    setSelectedUsers,
+    placeholder = "Select members..."
+}: UsersComboboxProps) => {
 
     const [open, setOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
@@ -92,7 +98,7 @@ export const UsersCombobox = ({ userLists, selectedUsers, setSelectedUsers }: Us
                             </span>
                         ))
                     ) : (
-                        <span className="text-muted-foreground"></span>
+                        <span className="text-muted-foreground">{placeholder}</span>
                     )}
                 </div>
                 <svg

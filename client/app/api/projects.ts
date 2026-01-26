@@ -13,13 +13,6 @@ export const ProjectsAPI = {
     return data;
   },
 
-  // Assign teams to a project
-  assignTeams: async (payload: AssignTeamsToProject): Promise<Project> => {
-    const { data } = await api.post(`/projects/assign/teams/${payload.projectId}`, {
-      team_ids: payload.teamIds,
-    });
-    return data;
-  },
 
   // GET /projects/:id
   getById: async (id: number): Promise<Project> => {
@@ -45,5 +38,18 @@ export const ProjectsAPI = {
   // DELETE /projects/:id
   delete: async (id: number): Promise<void> => {
     await api.delete(`/projects/${id}`);
+  },
+
+  // Assign teams to a project
+  assignTeams: async (payload: AssignTeamsToProject): Promise<Project> => {
+    const { data } = await api.post(`/projects/assign/teams/${payload.projectId}`, {
+      team_ids: payload.teamIds,
+    });
+    return data;
+  },
+
+  getProjectsUnderUser: async (userId: number): Promise<Project[]> => {
+    const { data } = await api.get(`/projects/user/${userId}`);
+    return data;
   },
 };
